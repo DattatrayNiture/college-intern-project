@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 //require('mongoose-type-url');
+
 const collegeSchema = new mongoose.Schema({
 
     name: {
@@ -27,6 +28,7 @@ const collegeSchema = new mongoose.Schema({
         default: false }
 
 }, { timestamps: true })
+
     module.exports = mongoose.model('College', collegeSchema)
     
    

@@ -7,7 +7,7 @@ const internsEntry = async function (req, res) {
   try {
     const { name, email, mobile, collegeName } = req.body
 
-    if(req.body)
+    
 
     if (!name) {
       return res.status(400).send({ status: false, msg: "BAD REQUEST please provied valid name" })
