@@ -4,8 +4,8 @@ const internModel = require("../models/internModel")
 
 const createCollege_Doc = async function (req, res) {
   try {
-    if(Object.keys(req.body).length <= 0){
-      return res.status(400).send({status:false, msg: "Bad Request please enter information about college"})
+    if (Object.keys(req.body).length <= 0) {
+      return res.status(400).send({ status: false, msg: "Bad Request please enter information about college" })
     }
 
     const { name, fullName, logoLink } = req.body
@@ -42,47 +42,52 @@ const createCollege_Doc = async function (req, res) {
 
 const collegeDetails = async function (req, res) {
   try {
-    if(Object.keys(req.query).length <= 0){
-      return res.status(400).send({status:false, msg: "Bad Request please give input as college name"})
+    if (Object.keys(req.query).length <= 0) {
+      return res.status(400).send({ status: false, msg: "Bad Request please give input as college name" })
     }
     const collegeName = req.query.collegeName
 
 
     if (!collegeName) { return res.status(400).send({ status: false, msg: "BAD REQUEST please provied valid collegeName" }) }
-    
-    
+
+
     const college = await collegeModel.find({ name: collegeName, isDeleted: false })
 
-
+    console.log(college.length)
     if (!college || college.length <= 0) {
       return res.status(404).send({ status: false, msg: "BAD REQUEST  college not found" })
     }
+    const multiplecollege = [];
+    for (let j = 0; j < college.length; j++) {
 
-    // console.log(college)
-    const collegeId = college[0]._id
-    //   delete req.body["collegeName"]
+      // console.log(college)
+      const collegeId = college[j]._id
+      //   delete req.body["collegeName"]
 
-    const interName = await internModel.find({ collegeId: collegeId, isDeleted: false })
-    if (interName.length <= 0) { return res.status(404).send({ msg: `No intern apply for this college: ${collegeName} \n ${college} ` }) }
-    const interns = []
+      const interName = await internModel.find({ collegeId: collegeId, isDeleted: false })
+      if (interName.length <= 0) { return res.status(404).send({ msg: `No intern apply for this college: ${collegeName} \n ${college} ` }) }
+      const interns = []
 
-    for (let i = 0; i < interName.length; i++) {
-      let Object = {}
-      Object._id = interName[i]._id
-      Object.name = interName[i].name
-      Object.email = interName[i].email
-      Object.mobile = interName[i].mobile
-      interns.push(Object)
+      for (let i = 0; i < interName.length; i++) {
+        let Object = {}
+        Object._id = interName[i]._id
+        Object.name = interName[i].name
+        Object.email = interName[i].email
+        Object.mobile = interName[i].mobile
+        interns.push(Object)
+      }
+
+      const ObjectData = {
+        intens_count: interns.length,
+        name: college[j].name,
+        fullName: college[j].fullName,
+        logoLink: college[j].logoLink,
+        interns: interns
+      }
+      multiplecollege.push(ObjectData)
     }
 
-    const ObjectData = {
-      name: college[0].name,
-      fullName: college[0].fullName,
-      logoLink: college[0].logoLink,
-      interns: interns
-    }
-
-    return res.status(201).send({ status: true, count: interns.length, data: ObjectData })
+    return res.status(201).send({ status: true, total_college_count: multiplecollege.length, data: multiplecollege })
 
 
   }

@@ -55,7 +55,7 @@ const internsEntry = async function (req, res) {
      
       if (mob.test(mobile) == false) {
           console.log("Please enter valid mobile number.");
-          return res.status(400).send({status:false, msg:"BAD REQUEST please provied valid mobile which contain only numbers"})
+          return res.status(400).send({status:false, msg:"BAD REQUEST please provied valid mobile which contain only numbers and do not start with zero"})
         
       }
  
