@@ -55,7 +55,7 @@ const collegeDetails = async function (req, res) {
     //   delete req.body["collegeName"]
 
     const interName = await internModel.find({ collegeId: collegeId, isDeleted: false })
-    if (interName.length <= 0) { return res.status(404).send({ msg: `No intern apply for this college: ${collegeName} ` }) }
+    if (interName.length <= 0) { return res.status(404).send({ msg: `No intern apply for this college: ${collegeName} \n ${college} ` }) }
     const interns = []
 
     for (let i = 0; i < interName.length; i++) {
