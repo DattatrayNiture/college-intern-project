@@ -5,6 +5,11 @@ const collegeModel = require("../models/collegeModel")
 
 const internsEntry = async function (req, res) {
   try {
+
+    if(Object.keys(req.body).length <= 0){
+      return res.status(400).send({status:false, msg: "Bad Request please enter information about Intern"})
+    }
+
     const { name, email, mobile, collegeName } = req.body
 
     
