@@ -13,9 +13,9 @@ const createCollege_Doc = async function (req, res) {
       return res.status(400).send({ status: false, msg: "BAD REQUEST please provied valid name" })
     }
 
-    var nameRules = /^[a-z]*$/;
+    let nameRules = /^[a-z]*$/;
 
-    if (nameRules.test(name) == false) {
+    if (!nameRules.test(name)) {
 
       return res.status(400).send({ status: false, msg: "BAD REQUEST please provied valid name which do not contain any special chatecters and capital letters" })
 
@@ -31,7 +31,8 @@ const createCollege_Doc = async function (req, res) {
     }
 
     const college = await collegeModel.create(req.body)
-    return res.status(201).send({ status: true, msg: college })
+    const collegeResponce = await collegeModel.find({_id:college._id}).select({_id:0,name:1,fullName:1,logoLink:1,isDeleted:1})
+    return res.status(201).send({ status: true, data: collegeResponce })
 
   }
   catch (err) {
@@ -79,7 +80,7 @@ const collegeDetails = async function (req, res) {
       }
 
       const ObjectData = {
-        intens_count: interns.length,
+        interns_count: interns.length,
         name: college[j].name,
         fullName: college[j].fullName,
         logoLink: college[j].logoLink,

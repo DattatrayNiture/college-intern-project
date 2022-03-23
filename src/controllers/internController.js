@@ -5,8 +5,8 @@ const collegeModel = require("../models/collegeModel")
 
 const internsEntry = async function (req, res) {
   try {
-
-    if(Object.keys(req.body).length <= 0){
+    
+    if(!(Object.keys(req.body).length)){
       return res.status(400).send({status:false, msg: "Bad Request please enter information about Intern"})
     }
      
@@ -22,7 +22,7 @@ const internsEntry = async function (req, res) {
      
       if (nameRules.test(name) == false) {
          
-          return res.status(400).send({status:false, msg:"BAD REQUEST please provied valid name which contain minimum 3 charecters and maximum 25 and not contain any special chatecters "})
+          return res.status(400).send({status:false, msg:"BAD REQUEST please provied valid name which contain minimum 3 charecters and maximum 25 and do not contain any special chatecters "})
         
       }
 
@@ -31,7 +31,7 @@ const internsEntry = async function (req, res) {
       return res.status(400).send({ status: false, msg: "BAD REQUEST please provied valid email" })
     }
 
-    var emailRules = /^[^A-Z]*$/;
+    let emailRules = /^[^A-Z]*$/;
      
       if (emailRules.test(email) == false) {
          
@@ -73,7 +73,7 @@ const internsEntry = async function (req, res) {
 
     const college = await collegeModel.find({ fullName: collegeName , isDeleted: false })
     
-    if (!college || college.length <= 0) {
+    if (!(college.length) || college.length <= 0) {
       return res.status(404).send({ status: false, msg: "BAD REQUEST  college not found" })
     }
 
@@ -83,7 +83,7 @@ const internsEntry = async function (req, res) {
     const interName = await internModel.create(req.body)
     const internFields = await internModel.findOne({_id:interName._id}).select({_id:1,name:1, email:1, mobile:1, collegeId:1})
 
-    return res.status(201).send({ status: true, msg: internFields })
+    return res.status(201).send({ status: true, data: internFields })
 
   }
   catch (err) {
