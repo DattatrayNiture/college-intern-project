@@ -45,6 +45,7 @@ const collegeDetails = async function (req, res) {
     if (Object.keys(req.query).length <= 0) {
       return res.status(400).send({ status: false, msg: "Bad Request please give input as college name" })
     }
+
     const collegeName = req.query.collegeName
 
 
@@ -53,7 +54,7 @@ const collegeDetails = async function (req, res) {
 
     const college = await collegeModel.find({ name: collegeName, isDeleted: false })
 
-    console.log(college.length)
+    //console.log(college.length)
     if (!college || college.length <= 0) {
       return res.status(404).send({ status: false, msg: "BAD REQUEST  college not found" })
     }
@@ -64,7 +65,7 @@ const collegeDetails = async function (req, res) {
       const collegeId = college[j]._id
       //   delete req.body["collegeName"]
 
-      const interName = await internModel.find({ collegeId: collegeId, isDeleted: false })
+      const interName = await internModel.find({ collegeId: collegeId, isDeleted: false})
       if (interName.length <= 0) { return res.status(404).send({ msg: `No intern apply for this college: ${collegeName} \n ${college} ` }) }
       const interns = []
 
@@ -87,7 +88,7 @@ const collegeDetails = async function (req, res) {
       multiplecollege.push(ObjectData)
     }
 
-    return res.status(201).send({ status: true, total_college_count: multiplecollege.length, data: multiplecollege })
+    return res.status(200).send({ status: true, total_college_count: multiplecollege.length, data: multiplecollege })
 
 
   }

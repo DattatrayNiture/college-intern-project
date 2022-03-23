@@ -9,8 +9,8 @@ const internsEntry = async function (req, res) {
     if(Object.keys(req.body).length <= 0){
       return res.status(400).send({status:false, msg: "Bad Request please enter information about Intern"})
     }
-
-    const { name, email, mobile, collegeName } = req.body
+     
+     const { name, email, mobile, collegeName } = req.body
 
     
 
@@ -54,7 +54,7 @@ const internsEntry = async function (req, res) {
       var mob = /^[1-9]{1}[0-9]{9}$/;
      
       if (mob.test(mobile) == false) {
-          console.log("Please enter valid mobile number.");
+          
           return res.status(400).send({status:false, msg:"BAD REQUEST please provied valid mobile which contain only numbers and do not start with zero"})
         
       }
@@ -72,7 +72,7 @@ const internsEntry = async function (req, res) {
     }
 
     const college = await collegeModel.find({ fullName: collegeName , isDeleted: false })
-    console.log(college)
+    
     if (!college || college.length <= 0) {
       return res.status(404).send({ status: false, msg: "BAD REQUEST  college not found" })
     }
